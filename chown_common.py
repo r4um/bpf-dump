@@ -53,7 +53,6 @@ class Data(ct.Structure):
                 ("uid", ct.c_uint),
                 ("tuid", ct.c_uint),
                 ("tgid", ct.c_uint),
-                ("mode", ct.c_ushort),
                 ("name", ct.c_char * NAME_MAX),
                 ("comm", ct.c_char * TASK_COMM_LEN)
                 ]
@@ -64,7 +63,7 @@ def print_event(cpu, data, size):
     global start
     event = ct.cast(data, ct.POINTER(Data)).contents
     time_s = float(event.ts) / 1000000000
-    print("%-18.9f %-6d %-6d %-6d %-6d %-6d %-16s %-16s" % (time_s, event.pid, event.uid, event.tuid, event.tgid, event.mode, event.name, event.comm))
+    print("%-18.9f %-6d %-6d %-6d %-6d %-16s %-16s" % (time_s, event.pid, event.uid, event.tuid, event.tgid, event.name, event.comm))
 
 # loop with callback to print_event
 b["events"].open_perf_buffer(print_event)
